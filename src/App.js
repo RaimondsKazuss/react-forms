@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-// import { yup, object } from 'yup';
 import * as yup from 'yup';
 
 const FormContainer = styled.div`
@@ -26,7 +24,8 @@ const StyledError = styled.div`
 `
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required()
+  name: yup.string().required(),
+  email: yup.string().email().required()
 })
 
 function App() {
@@ -65,6 +64,9 @@ function App() {
                 Email
                 <Field type="email" name="email"/>
               </label>
+              <StyledError>
+                  <ErrorMessage name="email"/>
+                </StyledError>
               <label>
                 Confirm email
                 <Field type="email" name="confirmEmail"/>
