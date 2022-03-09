@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+// import { yup, object } from 'yup';
+import * as yup from 'yup';
 
 const FormContainer = styled.div`
   width: 16rem;
@@ -16,57 +19,72 @@ const FormContainer = styled.div`
   }
 `
 
+const StyledError = styled.div`
+  color: tomato;
+  width: 100%;
+  margin: 0.5rem 0;
+`
+
+const validationSchema = yup.object().shape({
+  name: yup.string().required()
+})
+
 function App() {
-  const [formState, setFormState] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    confirmEmail: '',
-    password: '',
-    confirmPassword: '',
-    consent: false,
-  })
-  
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log(formState)
-  }
-  
+
   return (
     <div className="App">
       <FormContainer>
-        <form>
-          <label>
-            Name:
-            <input type="text" value={formState.name} onChange={(event => setFormState({...formState, name: event.target.value}))}/>
-          </label>
-          <label>
-            Last name
-            <input type="text" value={formState.lastName} onChange={(event => setFormState({...formState, lastName: event.target.value}))}/>
-          </label>
-          <label>
-            Email
-            <input type="email" value={formState.email} onChange={(event => setFormState({...formState, email: event.target.value}))}/>
-          </label>
-          <label>
-            Confirm email
-            <input type="email" value={formState.confirmEmail} onChange={(event => setFormState({...formState, confirmEmail: event.target.value}))}/>
-          </label>
-          <label>
-            Password
-            <input type="password" value={formState.password} onChange={(event => setFormState({...formState, password: event.target.value}))}/>
-          </label>
-          <label>
-            Confirm password
-            <input type="password" value={formState.confirmPassword} onChange={(event => setFormState({...formState, confirmPassword: event.target.value}))}/>
-          </label>
-          <label>
-            I agree to terms and conditions
-            <input type="checkbox" checked={formState.consent} value={formState.consent} onChange={(event => setFormState({...formState, consent: event.target.checked}))}/>
-          </label>
-          <button onClick={handleSubmit}>Submit</button>
-        </form>  
-      </FormContainer>      
+        <Formik
+          initialValues={{
+            name: '',
+            lastName: '',
+            email: '',
+            confirmEmail: '',
+            password: '',
+            confirmPassword: '',
+            consent: false,
+          }}
+          onSubmit={values => {
+            console.log(values)
+          }}
+          validationSchema={validationSchema}
+        >
+            <Form>
+              <label>
+                Name:
+                <Field type="text" name="name"/>
+                <StyledError>
+                  <ErrorMessage name="name"/>
+                </StyledError>
+              </label>
+              <label>
+                Last name
+                <Field type="text" name="lastName" />
+              </label>
+              <label>
+                Email
+                <Field type="email" name="email"/>
+              </label>
+              <label>
+                Confirm email
+                <Field type="email" name="confirmEmail"/>
+              </label>
+              <label>
+                Password
+                <Field type="password" name="password" />
+              </label>
+              <label>
+                Confirm password
+                <Field type="password" name="confirmPassword" />
+              </label>
+              <label>
+                I agree to terms and conditions
+                <Field type="checkbox" name="consent" />
+              </label>
+              <button type='submit'>Submit</button>
+            </Form>
+            </Formik>
+          </FormContainer>      
     </div>
   );
 }
