@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import './App.css';
-
 const FormContainer = styled.div`
   width: 12rem;
   border: 1px solid #444;
